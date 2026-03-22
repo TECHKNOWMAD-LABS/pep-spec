@@ -1,6 +1,19 @@
-# PEP -- Protocol for Evolutionary Programs
+# PEP — Protocol for Evolutionary Programs
 
-A formal specification for an AI agent ecosystem built around evolutionary computation. PEP defines seven interoperating components that together enable reproducible, observable, and privacy-aware evolutionary processes.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776ab.svg)](https://www.python.org/downloads/release/python-3120/)
+[![Tests](https://img.shields.io/badge/Tests-125%20passing-brightgreen.svg)](conformance/)
+
+A formal specification for AI agent ecosystems built around evolutionary computation. PEP defines seven interoperating components that together enable reproducible, observable, and privacy-aware evolutionary processes.
+
+## Features
+
+- **Formal JSON Schema (draft 2020-12)** for all seven components — validate any conforming implementation
+- **Python 3.12 dataclass stubs** with `from_dict` / `to_dict` and full type annotations
+- **TypeScript type definitions** for browser and Node.js consumers
+- **125 conformance tests** covering schema validation, round-trip serialization, edge cases, and cross-spec references
+- **Immutable event log** (PEP-004) providing a tamper-evident audit trail for every ecosystem action
+- **Field-level privacy controls** (PEP-006) with retention policy, consent tracking, and access-control rules
 
 ## Specifications
 
@@ -14,37 +27,23 @@ A formal specification for an AI agent ecosystem built around evolutionary compu
 | [006](specs/PEP-006-privacy.md) | Privacy | Field-level data protection, retention, consent, and audit rules |
 | [007](specs/PEP-007-agent.md) | Agent | Autonomous actors with roles, capabilities, policies, and observable state |
 
-## Directory Structure
-
-```
-pep-spec/
-  specs/           # Markdown specification documents (PEP-001 through PEP-007)
-  schemas/         # JSON Schema (draft 2020-12) for each spec
-  types/           # TypeScript type definitions
-  stubs/           # Python dataclass stubs with from_dict/to_dict
-  conformance/     # 125 pytest conformance tests
-  README.md
-  LICENSE          # MIT
-  pyproject.toml
-```
-
 ## Quick Start
 
-### Install dependencies
+**Install:**
 
 ```bash
-pip install jsonschema pytest
+pip install jsonschema
+pip install pytest pytest-cov  # for running tests
 ```
 
-### Run conformance tests
+**Run the conformance suite:**
 
 ```bash
 pytest conformance/ -v
+# 125 passed in <1s
 ```
 
-All 125 tests validate JSON Schema conformance, Python stub serialization round-trips, edge cases, and cross-spec references.
-
-### Use the Python stubs
+**Instantiate and round-trip an Organism:**
 
 ```python
 import sys
@@ -68,25 +67,59 @@ data = {
 }
 
 org = Organism.from_dict(data)
-assert org.to_dict() == data
+assert org.to_dict() == data   # round-trip verified
 ```
 
-### Validate against JSON Schema
+**Validate against the JSON Schema:**
 
 ```python
-import json
-import jsonschema
+import json, jsonschema
 
 with open("schemas/organism.schema.json") as f:
     schema = json.load(f)
 
-jsonschema.validate(data, schema)  # raises on invalid
+jsonschema.validate(data, schema)  # raises jsonschema.ValidationError on invalid input
+```
+
+## Architecture
+
+```
+pep-spec/
+  specs/           # Authoritative Markdown specifications (PEP-001 — PEP-007)
+  schemas/         # JSON Schema (draft 2020-12) — one file per spec
+  types/           # TypeScript type definitions (index.d.ts)
+  stubs/           # Python 3.12 dataclass stubs with from_dict / to_dict
+  conformance/     # 125 pytest conformance tests (schema, serialization, cross-spec)
+  pyproject.toml   # Build config, dependencies, pytest + mypy settings
+  LICENSE          # MIT
+```
+
+The specs are the single source of truth. Schemas, stubs, and TypeScript types are generated artifacts that must conform to the spec. The conformance suite enforces this mechanically on every commit.
+
+**Component interaction:**
+
+```
+Agent (PEP-007)
+  └─ drives ──► Engine (PEP-003)
+                  ├─ selects / mutates ──► Organism (PEP-001)
+                  ├─ scores via ──────────► Judge (PEP-002)
+                  ├─ emits to ────────────► Event Log (PEP-004)
+                  ├─ imports/exports via ─► Sharing (PEP-005)
+                  └─ enforces ────────────► Privacy (PEP-006)
 ```
 
 ## Status
 
-All specifications are in **Draft** status. Feedback and contributions welcome.
+All specifications are in **Draft** status. Schemas and stubs track the draft. Breaking changes are versioned in `pyproject.toml`.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). PRs welcome — all contributions are licensed under MIT.
 
 ## License
 
-[MIT](LICENSE) -- Copyright 2026 TechKnowmad AI
+[MIT](LICENSE) — Copyright 2026 TechKnowMad AI
+
+---
+
+Built by [TechKnowMad Labs](https://techknowmad.ai)
