@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pep-spec.dev/schemas/organism.schema.json",
+  "title": "PEP-001 Organism",
+  "description": "The fundamental unit in the PEP ecosystem — an evolvable entity with genome, phenotype, and lifecycle status.",
+  "type": "object",
+  "required": ["id", "name", "version", "genome", "phenotype", "metadata", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "description": "Unique identifier for the organism"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Human-readable name"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+      "description": "Semantic version string"
+    },
+    "genome": {
+      "type": "object",
+      "required": ["traits", "mutations"],
+      "additionalProperties": false,
+      "properties": {
+        "traits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "value", "weight"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "value": {},
+              "weight": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        },
+        "mutations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["gene", "operation", "payload"],
+            "additionalProperties": false,
+            "properties": {
+              "gene": { "type": "string", "minLength": 1 },
+              "operation": { "type": "string", "enum": ["add", "remove", "modify"] },
+              "payload": {}
+            }
+          }
+        }
+      }
+    },
+    "phenotype": {
+      "type": "object",
+      "required": ["capabilities", "constraints"],
+      "additionalProperties": false,
+      "properties": {
+        "capabilities": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["resource", "limit"],
+            "additionalProperties": false,
+            "properties": {
+              "resource": { "type": "string", "minLength": 1 },
+              "limit": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["created_at", "updated_at", "tags", "lineage"],
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 datetime"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 datetime"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "lineage": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+          },
+          "description": "List of ancestor organism UUIDs"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["embryo", "alive", "dormant", "dead"],
+      "description": "Current lifecycle status"
+    }
+  }
+}

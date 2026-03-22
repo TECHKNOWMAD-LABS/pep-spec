@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pep-spec.dev/schemas/privacy.schema.json",
+  "title": "PEP-006 Privacy",
+  "description": "Data protection rules governing redaction, retention, consent, and audit of PEP ecosystem data.",
+  "type": "object",
+  "required": ["id", "version", "scope", "rules", "retention", "consent", "audit"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["organism", "judge", "engine", "event", "global"]
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "action"],
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Dot-path to the field"
+          },
+          "action": {
+            "type": "string",
+            "enum": ["redact", "hash", "encrypt", "omit", "generalize"]
+          },
+          "condition": {
+            "type": "object",
+            "required": ["context"],
+            "additionalProperties": false,
+            "properties": {
+              "context": {
+                "type": "string",
+                "enum": ["export", "log", "api", "always"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "retention": {
+      "type": "object",
+      "required": ["max_age_days", "auto_purge"],
+      "additionalProperties": false,
+      "properties": {
+        "max_age_days": { "type": "integer", "exclusiveMinimum": 0 },
+        "auto_purge": { "type": "boolean" },
+        "archive_after_days": { "type": "integer", "exclusiveMinimum": 0 }
+      }
+    },
+    "consent": {
+      "type": "object",
+      "required": ["required"],
+      "additionalProperties": false,
+      "properties": {
+        "required": { "type": "boolean" },
+        "granted_by": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        },
+        "granted_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "required": ["log_access", "log_mutations", "require_justification"],
+      "additionalProperties": false,
+      "properties": {
+        "log_access": { "type": "boolean" },
+        "log_mutations": { "type": "boolean" },
+        "require_justification": { "type": "boolean" }
+      }
+    }
+  }
+}

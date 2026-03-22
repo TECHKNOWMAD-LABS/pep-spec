@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pep-spec.dev/schemas/judge.schema.json",
+  "title": "PEP-002 Judge",
+  "description": "Evaluates organisms against defined criteria and produces verdicts.",
+  "type": "object",
+  "required": ["id", "name", "version", "criteria", "verdict", "config"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+    },
+    "criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "weight", "threshold", "metric"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "weight": { "type": "number", "minimum": 0, "maximum": 1 },
+          "threshold": { "type": "number", "minimum": 0, "maximum": 1 },
+          "metric": {
+            "type": "string",
+            "enum": ["accuracy", "latency", "cost", "safety", "creativity"]
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "required": ["organism_id", "score", "passed", "details"],
+      "additionalProperties": false,
+      "properties": {
+        "organism_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        },
+        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "passed": { "type": "boolean" },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["criterion", "score", "passed"],
+            "additionalProperties": false,
+            "properties": {
+              "criterion": { "type": "string", "minLength": 1 },
+              "score": { "type": "number" },
+              "passed": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "config": {
+      "type": "object",
+      "required": ["max_retries", "timeout_ms", "parallel"],
+      "additionalProperties": false,
+      "properties": {
+        "max_retries": { "type": "integer", "minimum": 0 },
+        "timeout_ms": { "type": "integer", "exclusiveMinimum": 0 },
+        "parallel": { "type": "boolean" }
+      }
+    }
+  }
+}

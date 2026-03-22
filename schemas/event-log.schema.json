@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pep-spec.dev/schemas/event-log.schema.json",
+  "title": "PEP-004 Event Log",
+  "description": "Immutable event records for auditing and replay of the evolutionary process.",
+  "type": "object",
+  "required": ["id", "timestamp", "type", "source", "payload", "sequence", "checksum"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "organism.created",
+        "organism.mutated",
+        "organism.evaluated",
+        "organism.died",
+        "generation.started",
+        "generation.completed",
+        "engine.started",
+        "engine.stopped",
+        "judge.verdict",
+        "sharing.exported",
+        "sharing.imported",
+        "privacy.redacted",
+        "agent.action"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "required": ["component", "id"],
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "type": "string",
+          "enum": ["organism", "judge", "engine", "sharing", "privacy", "agent"]
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        }
+      }
+    },
+    "payload": {
+      "type": "object"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "checksum": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 hex digest of the event payload"
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pep-spec.dev/schemas/sharing.schema.json",
+  "title": "PEP-005 Sharing",
+  "description": "Import/export protocol for exchanging organisms, genomes, and evolutionary artifacts.",
+  "type": "object",
+  "required": ["id", "format", "source", "target", "content", "integrity", "permissions"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "format": {
+      "type": "string",
+      "enum": ["pep-native", "onnx", "safetensors", "json", "custom"]
+    },
+    "source": {
+      "type": "object",
+      "required": ["organism_id", "engine_id", "generation"],
+      "additionalProperties": false,
+      "properties": {
+        "organism_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        },
+        "engine_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "required": ["uri", "protocol"],
+      "additionalProperties": false,
+      "properties": {
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "protocol": {
+          "type": "string",
+          "enum": ["https", "ipfs", "s3", "local"]
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "required": ["genome", "phenotype", "history", "size_bytes"],
+      "additionalProperties": false,
+      "properties": {
+        "genome": { "type": "boolean" },
+        "phenotype": { "type": "boolean" },
+        "history": { "type": "boolean" },
+        "size_bytes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "required": ["algorithm", "hash"],
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": ["sha256", "sha512", "blake3"]
+        },
+        "hash": { "type": "string", "minLength": 1 },
+        "signature": { "type": "string" }
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "required": ["public", "allowed_consumers"],
+      "additionalProperties": false,
+      "properties": {
+        "public": { "type": "boolean" },
+        "allowed_consumers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+          }
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pep-spec.dev/schemas/engine.schema.json",
+  "title": "PEP-003 Engine",
+  "description": "Orchestrates the evolutionary process — manages populations, selection, crossover, mutation, and termination.",
+  "type": "object",
+  "required": ["id", "name", "version", "population", "selection", "crossover", "mutation", "termination"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+    },
+    "population": {
+      "type": "object",
+      "required": ["size", "organisms", "generation"],
+      "additionalProperties": false,
+      "properties": {
+        "size": { "type": "integer", "exclusiveMinimum": 0 },
+        "organisms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+          }
+        },
+        "generation": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "selection": {
+      "type": "object",
+      "required": ["strategy", "pressure", "elitism_rate"],
+      "additionalProperties": false,
+      "properties": {
+        "strategy": {
+          "type": "string",
+          "enum": ["tournament", "roulette", "rank", "elite"]
+        },
+        "pressure": { "type": "number", "minimum": 0, "maximum": 1 },
+        "elitism_rate": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "crossover": {
+      "type": "object",
+      "required": ["method", "rate"],
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["single_point", "two_point", "uniform", "none"]
+        },
+        "rate": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "mutation": {
+      "type": "object",
+      "required": ["rate", "decay"],
+      "additionalProperties": false,
+      "properties": {
+        "rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "decay": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "termination": {
+      "type": "object",
+      "required": ["max_generations", "fitness_target", "stagnation_limit"],
+      "additionalProperties": false,
+      "properties": {
+        "max_generations": { "type": "integer", "exclusiveMinimum": 0 },
+        "fitness_target": { "type": "number", "minimum": 0, "maximum": 1 },
+        "stagnation_limit": { "type": "integer", "exclusiveMinimum": 0 }
+      }
+    }
+  }
+}

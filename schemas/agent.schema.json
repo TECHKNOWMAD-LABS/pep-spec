@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pep-spec.dev/schemas/agent.schema.json",
+  "title": "PEP-007 Agent",
+  "description": "Autonomous actor that operates within the PEP ecosystem with defined roles, capabilities, and policies.",
+  "type": "object",
+  "required": ["id", "name", "version", "role", "capabilities", "bindings", "policy", "state"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+    },
+    "role": {
+      "type": "string",
+      "enum": ["evolver", "guardian", "explorer", "harvester", "orchestrator"]
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "bindings": {
+      "type": "object",
+      "required": ["organism_ids", "judge_ids"],
+      "additionalProperties": false,
+      "properties": {
+        "engine_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        },
+        "organism_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+          }
+        },
+        "judge_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "required": ["max_actions_per_minute", "require_approval", "allowed_actions", "denied_actions"],
+      "additionalProperties": false,
+      "properties": {
+        "max_actions_per_minute": { "type": "integer", "exclusiveMinimum": 0 },
+        "require_approval": { "type": "boolean" },
+        "allowed_actions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "denied_actions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "state": {
+      "type": "object",
+      "required": ["status", "error_count"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["idle", "active", "suspended", "terminated"]
+        },
+        "current_task": { "type": "string" },
+        "last_action_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "error_count": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}
