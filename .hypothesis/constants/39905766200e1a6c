@@ -1,0 +1,4 @@
+# file: /Users/audithan/tkm-edgecraft/work/pep-spec/stubs/privacy.py
+# hypothesis_version: 6.141.1
+
+[365, 'action', 'always', 'api', 'archive_after_days', 'audit', 'auto_purge', 'condition', 'consent', 'context', 'encrypt', 'engine', 'event', 'export', 'field', 'generalize', 'global', 'granted_at', 'granted_by', 'hash', 'id', 'judge', 'log', 'log_access', 'log_mutations', 'max_age_days', 'omit', 'organism', 'redact', 'required', 'retention', 'rules', 'scope', 'version']

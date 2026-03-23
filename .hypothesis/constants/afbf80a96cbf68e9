@@ -1,0 +1,4 @@
+# file: /Users/audithan/tkm-edgecraft/work/pep-spec/stubs/event_log.py
+# hypothesis_version: 6.141.1
+
+['agent', 'agent.action', 'checksum', 'component', 'correlation_id', 'engine', 'engine.started', 'engine.stopped', 'generation.completed', 'generation.started', 'id', 'judge', 'judge.verdict', 'organism', 'organism.created', 'organism.died', 'organism.evaluated', 'organism.mutated', 'payload', 'privacy', 'privacy.redacted', 'sequence', 'sharing', 'sharing.exported', 'sharing.imported', 'source', 'timestamp', 'type']

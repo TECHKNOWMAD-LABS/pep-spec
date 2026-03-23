@@ -1,0 +1,4 @@
+# file: /Users/audithan/tkm-edgecraft/work/pep-spec/stubs/sharing.py
+# hypothesis_version: 6.141.1
+
+['algorithm', 'allowed_consumers', 'blake3', 'content', 'custom', 'engine_id', 'expires_at', 'format', 'generation', 'genome', 'hash', 'history', 'https', 'id', 'integrity', 'ipfs', 'json', 'local', 'onnx', 'organism_id', 'pep-native', 'permissions', 'phenotype', 'protocol', 'public', 's3', 'safetensors', 'sha256', 'sha512', 'signature', 'size_bytes', 'source', 'target', 'uri']
