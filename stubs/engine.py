@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, TypeVar
+from typing import Any
+
+from stubs.validation import (
+    ValidationError, require_field, validate_uuid, validate_semver,
+    validate_range, validate_enum_value,
+)
 
 
 class SelectionStrategy(str, Enum):
@@ -29,6 +34,8 @@ class Population:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Population:
+        validate_range(require_field(data, "size", int), "size", min_val=1)
+        validate_range(require_field(data, "generation", int), "generation", min_val=0)
         return cls(size=data["size"], organisms=data["organisms"], generation=data["generation"])
 
     def to_dict(self) -> dict[str, Any]:
@@ -43,6 +50,9 @@ class Selection:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Selection:
+        validate_enum_value(require_field(data, "strategy", str), {s.value for s in SelectionStrategy}, "strategy")
+        validate_range(require_field(data, "pressure", (int, float)), "pressure", 0.0, 1.0)
+        validate_range(require_field(data, "elitism_rate", (int, float)), "elitism_rate", 0.0, 1.0)
         return cls(
             strategy=SelectionStrategy(data["strategy"]),
             pressure=data["pressure"],
@@ -118,6 +128,9 @@ class Engine:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Engine:
+        validate_uuid(require_field(data, "id", str), "id")
+        require_field(data, "name", str)
+        validate_semver(require_field(data, "version", str), "version")
         return cls(
             id=data["id"],
             name=data["name"],

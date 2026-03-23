@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, TypeVar
+from typing import Any
+
+from stubs.validation import (
+    ValidationError, require_field, validate_uuid, validate_semver,
+    validate_range, validate_enum_value, validate_list,
+)
 
 
 class Metric(str, Enum):
@@ -24,6 +29,10 @@ class Criterion:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Criterion:
+        require_field(data, "name", str)
+        validate_range(require_field(data, "weight", (int, float)), "weight", 0.0, 1.0)
+        require_field(data, "threshold", (int, float))
+        validate_enum_value(require_field(data, "metric", str), {m.value for m in Metric}, "metric")
         return cls(
             name=data["name"],
             weight=data["weight"],
@@ -63,6 +72,9 @@ class Verdict:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Verdict:
+        validate_uuid(require_field(data, "organism_id", str), "organism_id")
+        validate_range(require_field(data, "score", (int, float)), "score", 0.0, 1.0)
+        require_field(data, "passed", bool)
         return cls(
             organism_id=data["organism_id"],
             score=data["score"],
@@ -112,6 +124,10 @@ class Judge:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Judge:
+        validate_uuid(require_field(data, "id", str), "id")
+        require_field(data, "name", str)
+        validate_semver(require_field(data, "version", str), "version")
+        validate_list(require_field(data, "criteria", list), "criteria", min_length=1)
         return cls(
             id=data["id"],
             name=data["name"],

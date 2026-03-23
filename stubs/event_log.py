@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, TypeVar
+from typing import Any
+
+from stubs.validation import (
+    ValidationError, require_field, validate_uuid, validate_range,
+    validate_enum_value, validate_string_not_empty,
+)
 
 
 class EventType(str, Enum):
@@ -58,6 +63,15 @@ class EventLog:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> EventLog:
+        validate_uuid(require_field(data, "id", str), "id")
+        require_field(data, "timestamp", str)
+        validate_enum_value(require_field(data, "type", str), {e.value for e in EventType}, "type")
+        require_field(data, "source", dict)
+        validate_range(require_field(data, "sequence", int), "sequence", min_val=0)
+        validate_string_not_empty(require_field(data, "checksum", str), "checksum")
+        correlation_id = data.get("correlation_id")
+        if correlation_id is not None:
+            validate_uuid(correlation_id, "correlation_id")
         return cls(
             id=data["id"],
             timestamp=data["timestamp"],
@@ -66,7 +80,7 @@ class EventLog:
             payload=data["payload"],
             sequence=data["sequence"],
             checksum=data["checksum"],
-            correlation_id=data.get("correlation_id"),
+            correlation_id=correlation_id,
         )
 
     def to_dict(self) -> dict[str, Any]:

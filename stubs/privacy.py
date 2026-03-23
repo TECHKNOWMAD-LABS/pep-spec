@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, TypeVar
+from typing import Any
+
+from stubs.validation import (
+    ValidationError, require_field, validate_uuid, validate_semver,
+    validate_range, validate_enum_value,
+)
 
 
 class PrivacyScope(str, Enum):
@@ -71,6 +76,8 @@ class Retention:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Retention:
+        validate_range(require_field(data, "max_age_days", int), "max_age_days", min_val=1)
+        require_field(data, "auto_purge", bool)
         return cls(
             max_age_days=data["max_age_days"],
             auto_purge=data["auto_purge"],
@@ -144,6 +151,9 @@ class PrivacyPolicy:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> PrivacyPolicy:
+        validate_uuid(require_field(data, "id", str), "id")
+        validate_semver(require_field(data, "version", str), "version")
+        validate_enum_value(require_field(data, "scope", str), {s.value for s in PrivacyScope}, "scope")
         return cls(
             id=data["id"],
             version=data["version"],

@@ -1,5 +1,6 @@
 """PEP — Protocol for Evolutionary Programs — Python stubs."""
 
+from stubs.validation import ValidationError
 from stubs.organism import Organism, Trait, Mutation, Genome, Constraint, Phenotype, OrganismMetadata, OrganismStatus
 from stubs.judge import Judge, Criterion, VerdictDetail, Verdict, JudgeConfig, Metric
 from stubs.engine import Engine, Population, Selection, Crossover, EngineMutation, Termination, SelectionStrategy, CrossoverMethod
@@ -9,6 +10,7 @@ from stubs.privacy import PrivacyPolicy, PrivacyRule, RuleCondition, Retention, 
 from stubs.agent import Agent, AgentBindings, AgentPolicy, AgentState, AgentRole, AgentStatus
 
 __all__ = [
+    "ValidationError",
     "Organism", "Trait", "Mutation", "Genome", "Constraint", "Phenotype", "OrganismMetadata", "OrganismStatus",
     "Judge", "Criterion", "VerdictDetail", "Verdict", "JudgeConfig", "Metric",
     "Engine", "Population", "Selection", "Crossover", "EngineMutation", "Termination", "SelectionStrategy", "CrossoverMethod",

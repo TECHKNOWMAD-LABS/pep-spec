@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, TypeVar
+from typing import Any
+
+from stubs.validation import (
+    ValidationError, require_field, validate_uuid, validate_range,
+    validate_enum_value, validate_string_not_empty,
+)
 
 
 class SharingFormat(str, Enum):
@@ -36,6 +41,9 @@ class SharingSource:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> SharingSource:
+        validate_uuid(require_field(data, "organism_id", str), "organism_id")
+        validate_uuid(require_field(data, "engine_id", str), "engine_id")
+        validate_range(require_field(data, "generation", int), "generation", min_val=0)
         return cls(
             organism_id=data["organism_id"],
             engine_id=data["engine_id"],
@@ -148,6 +156,13 @@ class SharingManifest:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> SharingManifest:
+        validate_uuid(require_field(data, "id", str), "id")
+        validate_enum_value(require_field(data, "format", str), {f.value for f in SharingFormat}, "format")
+        require_field(data, "source", dict)
+        require_field(data, "target", dict)
+        require_field(data, "content", dict)
+        require_field(data, "integrity", dict)
+        require_field(data, "permissions", dict)
         return cls(
             id=data["id"],
             format=SharingFormat(data["format"]),

@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, TypeVar
+from typing import Any
+
+from stubs.validation import (
+    ValidationError, require_field, validate_uuid, validate_semver,
+    validate_range, validate_enum_value, validate_string_not_empty,
+)
 
 
 class OrganismStatus(str, Enum):
@@ -22,6 +27,9 @@ class Trait:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Trait:
+        require_field(data, "name", str)
+        require_field(data, "weight", (int, float))
+        validate_range(data["weight"], "weight", min_val=0.0, max_val=1.0)
         return cls(name=data["name"], value=data["value"], weight=data["weight"])
 
     def to_dict(self) -> dict[str, Any]:
@@ -36,6 +44,11 @@ class Mutation:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Mutation:
+        require_field(data, "gene", str)
+        validate_enum_value(
+            require_field(data, "operation", str),
+            {"add", "remove", "modify"}, "operation",
+        )
         return cls(gene=data["gene"], operation=data["operation"], payload=data["payload"])
 
     def to_dict(self) -> dict[str, Any]:
@@ -130,6 +143,16 @@ class Organism:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Organism:
+        validate_uuid(require_field(data, "id", str), "id")
+        validate_string_not_empty(require_field(data, "name", str), "name", max_length=128)
+        validate_semver(require_field(data, "version", str), "version")
+        require_field(data, "genome", dict)
+        require_field(data, "phenotype", dict)
+        require_field(data, "metadata", dict)
+        validate_enum_value(
+            require_field(data, "status", str),
+            {s.value for s in OrganismStatus}, "status",
+        )
         return cls(
             id=data["id"],
             name=data["name"],

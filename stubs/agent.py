@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, TypeVar
+from typing import Any
+
+from stubs.validation import (
+    ValidationError, require_field, validate_uuid, validate_semver,
+    validate_range, validate_enum_value,
+)
 
 
 class AgentRole(str, Enum):
@@ -55,6 +60,8 @@ class AgentPolicy:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> AgentPolicy:
+        validate_range(require_field(data, "max_actions_per_minute", int), "max_actions_per_minute", min_val=1)
+        require_field(data, "require_approval", bool)
         return cls(
             max_actions_per_minute=data["max_actions_per_minute"],
             require_approval=data["require_approval"],
@@ -112,6 +119,10 @@ class Agent:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Agent:
+        validate_uuid(require_field(data, "id", str), "id")
+        require_field(data, "name", str)
+        validate_semver(require_field(data, "version", str), "version")
+        validate_enum_value(require_field(data, "role", str), {r.value for r in AgentRole}, "role")
         return cls(
             id=data["id"],
             name=data["name"],
