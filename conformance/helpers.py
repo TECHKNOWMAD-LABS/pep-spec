@@ -31,7 +31,18 @@ def load_schema(name: str) -> dict[str, Any]:
 
     Cached via lru_cache — repeated calls for the same schema avoid
     redundant disk I/O and JSON parsing.
+
+    Raises:
+        ValueError: If name contains path traversal characters.
+        FileNotFoundError: If schema file does not exist.
     """
+    # Prevent path traversal (CWE-22)
+    if ".." in name or "/" in name or "\\" in name:
+        raise ValueError(f"Invalid schema name: {name!r} — path traversal not allowed")
     path = SCHEMAS_DIR / f"{name}.schema.json"
-    with open(path) as f:
+    # Ensure resolved path stays within SCHEMAS_DIR
+    resolved = path.resolve()
+    if not str(resolved).startswith(str(SCHEMAS_DIR.resolve())):
+        raise ValueError(f"Schema path escapes schemas directory: {name!r}")
+    with open(resolved) as f:
         return json.load(f)
