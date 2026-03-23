@@ -1,4 +1,0 @@
-# file: /Users/audithan/tkm-edgecraft/work/pep-spec/stubs/organism.py
-# hypothesis_version: 6.141.1
-
-[0.0, 1.0, 128, 'add', 'alive', 'capabilities', 'constraints', 'created_at', 'dead', 'dormant', 'embryo', 'gene', 'genome', 'id', 'limit', 'lineage', 'metadata', 'modify', 'mutations', 'name', 'operation', 'payload', 'phenotype', 'remove', 'resource', 'status', 'tags', 'traits', 'updated_at', 'value', 'version', 'weight']

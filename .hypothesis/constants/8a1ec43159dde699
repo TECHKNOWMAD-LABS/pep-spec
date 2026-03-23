@@ -1,4 +1,0 @@
-# file: /Users/audithan/tkm-edgecraft/work/pep-spec/stubs/judge.py
-# hypothesis_version: 6.141.1
-
-[0.0, 1.0, 'accuracy', 'config', 'cost', 'creativity', 'criteria', 'criterion', 'details', 'id', 'latency', 'max_retries', 'metric', 'name', 'organism_id', 'parallel', 'passed', 'safety', 'score', 'threshold', 'timeout_ms', 'verdict', 'version', 'weight']

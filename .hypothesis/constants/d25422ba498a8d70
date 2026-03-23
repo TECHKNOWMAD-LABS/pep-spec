@@ -1,4 +1,0 @@
-# file: /Users/audithan/tkm-edgecraft/work/pep-spec/stubs/engine.py
-# hypothesis_version: 6.141.1
-
-[0.0, 1.0, 'crossover', 'decay', 'elite', 'elitism_rate', 'fitness_target', 'generation', 'id', 'max_generations', 'method', 'mutation', 'name', 'none', 'organisms', 'population', 'pressure', 'rank', 'rate', 'roulette', 'selection', 'single_point', 'size', 'stagnation_limit', 'strategy', 'termination', 'tournament', 'two_point', 'uniform', 'version']
