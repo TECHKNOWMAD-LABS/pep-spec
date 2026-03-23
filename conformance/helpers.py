@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sys
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -24,8 +25,13 @@ VALID_DATETIME = "2026-01-15T10:30:00Z"
 VALID_SEMVER = "1.0.0"
 
 
+@lru_cache(maxsize=16)
 def load_schema(name: str) -> dict[str, Any]:
-    """Load a JSON Schema file by base name (without extension)."""
+    """Load a JSON Schema file by base name (without extension).
+
+    Cached via lru_cache — repeated calls for the same schema avoid
+    redundant disk I/O and JSON parsing.
+    """
     path = SCHEMAS_DIR / f"{name}.schema.json"
     with open(path) as f:
         return json.load(f)
