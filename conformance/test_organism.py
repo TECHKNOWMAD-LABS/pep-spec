@@ -8,8 +8,8 @@ from typing import Any
 import jsonschema
 import pytest
 
-from conformance.helpers import VALID_UUID, VALID_UUID_2, VALID_DATETIME, load_schema
-from stubs.organism import Organism, OrganismStatus, Trait, Mutation, Genome, Phenotype, Constraint, OrganismMetadata
+from conformance.helpers import VALID_DATETIME, VALID_UUID, VALID_UUID_2, load_schema
+from stubs.organism import Constraint, Genome, Organism, OrganismStatus, Trait
 
 SCHEMA = load_schema("organism")
 

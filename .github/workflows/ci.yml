@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jsonschema pytest pytest-cov hypothesis ruff
+
+      - name: Lint with ruff
+        run: ruff check stubs/ conformance/
+
+      - name: Run tests
+        run: pytest -v --tb=short --cov=stubs --cov-report=term-missing
+
+      - name: Verify 100% coverage
+        run: |
+          COVERAGE=$(pytest --cov=stubs --cov-report=term conformance/ 2>&1 | grep TOTAL | awk '{print $4}' | tr -d '%')
+          echo "Coverage: ${COVERAGE}%"
+          if [ "$COVERAGE" != "100" ]; then
+            echo "::error::Coverage is ${COVERAGE}%, expected 100%"
+            exit 1
+          fi

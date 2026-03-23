@@ -8,8 +8,8 @@ from typing import Any
 import jsonschema
 import pytest
 
-from conformance.helpers import VALID_UUID, VALID_UUID_2, VALID_UUID_3, VALID_CHECKSUM, VALID_DATETIME, load_schema
-from stubs.event_log import EventLog, EventSource, EventType, ComponentType
+from conformance.helpers import VALID_CHECKSUM, VALID_DATETIME, VALID_UUID, VALID_UUID_2, VALID_UUID_3, load_schema
+from stubs.event_log import ComponentType, EventLog, EventSource, EventType
 
 SCHEMA = load_schema("event-log")
 

@@ -8,8 +8,8 @@ from typing import Any
 import jsonschema
 import pytest
 
-from conformance.helpers import VALID_UUID, VALID_UUID_2, VALID_UUID_3, VALID_DATETIME, load_schema
-from stubs.agent import Agent, AgentBindings, AgentPolicy, AgentState, AgentRole, AgentStatus
+from conformance.helpers import VALID_UUID, VALID_UUID_2, load_schema
+from stubs.agent import Agent, AgentBindings, AgentRole, AgentState, AgentStatus
 
 SCHEMA = load_schema("agent")
 
@@ -26,7 +26,10 @@ def test_agent_all_roles() -> None:
             "id": VALID_UUID, "name": "a", "version": "1.0.0", "role": role,
             "capabilities": [],
             "bindings": {"organism_ids": [], "judge_ids": []},
-            "policy": {"max_actions_per_minute": 1, "require_approval": False, "allowed_actions": [], "denied_actions": []},
+            "policy": {
+                "max_actions_per_minute": 1, "require_approval": False,
+                "allowed_actions": [], "denied_actions": [],
+            },
             "state": {"status": "idle", "error_count": 0},
         }
         jsonschema.validate(doc, SCHEMA)
@@ -38,7 +41,10 @@ def test_agent_all_statuses() -> None:
             "id": VALID_UUID, "name": "a", "version": "1.0.0", "role": "guardian",
             "capabilities": [],
             "bindings": {"organism_ids": [], "judge_ids": []},
-            "policy": {"max_actions_per_minute": 1, "require_approval": False, "allowed_actions": [], "denied_actions": []},
+            "policy": {
+                "max_actions_per_minute": 1, "require_approval": False,
+                "allowed_actions": [], "denied_actions": [],
+            },
             "state": {"status": status, "error_count": 0},
         }
         jsonschema.validate(doc, SCHEMA)

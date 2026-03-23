@@ -7,8 +7,11 @@ from enum import Enum
 from typing import Any
 
 from stubs.validation import (
-    ValidationError, require_field, validate_uuid, validate_semver,
-    validate_range, validate_enum_value,
+    require_field,
+    validate_enum_value,
+    validate_range,
+    validate_semver,
+    validate_uuid,
 )
 
 
@@ -58,7 +61,11 @@ class PrivacyRule:
         return cls(
             field=data["field"],
             action=RuleAction(data["action"]),
-            condition=RuleCondition.from_dict(data["condition"]) if "condition" in data and data["condition"] is not None else None,
+            condition=(
+                RuleCondition.from_dict(data["condition"])
+                if "condition" in data and data["condition"] is not None
+                else None
+            ),
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -147,7 +154,9 @@ class PrivacyPolicy:
     rules: list[PrivacyRule] = field(default_factory=list)
     retention: Retention = field(default_factory=lambda: Retention(max_age_days=365, auto_purge=False))
     consent: Consent = field(default_factory=lambda: Consent(required=False))
-    audit: Audit = field(default_factory=lambda: Audit(log_access=True, log_mutations=True, require_justification=False))
+    audit: Audit = field(
+        default_factory=lambda: Audit(log_access=True, log_mutations=True, require_justification=False),
+    )
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> PrivacyPolicy:

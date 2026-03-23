@@ -8,10 +8,15 @@ from typing import Any
 import jsonschema
 import pytest
 
-from conformance.helpers import VALID_UUID, VALID_UUID_2, VALID_UUID_3, VALID_CHECKSUM, VALID_DATETIME, load_schema
+from conformance.helpers import VALID_CHECKSUM, VALID_DATETIME, VALID_UUID, VALID_UUID_2, VALID_UUID_3, load_schema
 from stubs.sharing import (
-    SharingManifest, SharingSource, SharingTarget, SharingContent,
-    Integrity, Permissions, SharingFormat, TargetProtocol, IntegrityAlgorithm,
+    Integrity,
+    IntegrityAlgorithm,
+    Permissions,
+    SharingFormat,
+    SharingManifest,
+    SharingSource,
+    TargetProtocol,
 )
 
 SCHEMA = load_schema("sharing")

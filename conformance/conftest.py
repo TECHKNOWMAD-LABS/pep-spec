@@ -13,8 +13,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from conformance.helpers import VALID_UUID, VALID_UUID_2, VALID_UUID_3, VALID_CHECKSUM, VALID_DATETIME
-
+from conformance.helpers import VALID_CHECKSUM, VALID_DATETIME, VALID_UUID, VALID_UUID_2, VALID_UUID_3
 
 # ── Valid fixture payloads ──────────────────────────────────────────────────
 

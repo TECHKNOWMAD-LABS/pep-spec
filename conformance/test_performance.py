@@ -7,18 +7,12 @@ import time
 from pathlib import Path
 from typing import Any
 
-import pytest
-
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from conformance.helpers import load_schema, VALID_UUID, VALID_DATETIME, VALID_CHECKSUM
-
+from conformance.helpers import VALID_DATETIME, VALID_UUID, load_schema
 from stubs.organism import Organism
-from stubs.judge import Judge
-from stubs.engine import Engine
-
 
 # ── Schema caching verification ──────────────────────────────────────────
 

@@ -9,7 +9,7 @@ import jsonschema
 import pytest
 
 from conformance.helpers import VALID_UUID, VALID_UUID_2, load_schema
-from stubs.judge import Judge, Criterion, Verdict, VerdictDetail, JudgeConfig, Metric
+from stubs.judge import Criterion, Judge, JudgeConfig, Metric, VerdictDetail
 
 SCHEMA = load_schema("judge")
 

@@ -12,8 +12,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from conformance.helpers import load_schema
-from stubs.validation import ValidationError, validate_uuid, validate_string_not_empty
-
+from stubs.validation import ValidationError, validate_string_not_empty, validate_uuid
 
 # ── Path traversal prevention ────────────────────────────────────────────
 

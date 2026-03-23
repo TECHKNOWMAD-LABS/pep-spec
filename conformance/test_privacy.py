@@ -8,10 +8,15 @@ from typing import Any
 import jsonschema
 import pytest
 
-from conformance.helpers import VALID_UUID, VALID_UUID_2, VALID_DATETIME, load_schema
+from conformance.helpers import VALID_UUID, load_schema
 from stubs.privacy import (
-    PrivacyPolicy, PrivacyRule, RuleCondition, Retention, Consent, Audit,
-    PrivacyScope, RuleAction, ConditionContext,
+    ConditionContext,
+    Consent,
+    PrivacyPolicy,
+    PrivacyRule,
+    PrivacyScope,
+    Retention,
+    RuleAction,
 )
 
 SCHEMA = load_schema("privacy")

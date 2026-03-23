@@ -54,7 +54,10 @@ def validate_semver(value: str, field: str = "version") -> str:
     return value
 
 
-def validate_range(value: float | int, field: str, min_val: float | None = None, max_val: float | None = None) -> float | int:
+def validate_range(
+    value: float | int, field: str,
+    min_val: float | None = None, max_val: float | None = None,
+) -> float | int:
     """Validate a numeric value is within range."""
     if not isinstance(value, (int, float)):
         raise ValidationError(field, f"expected number, got {type(value).__name__}")

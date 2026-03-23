@@ -24,6 +24,16 @@ testpaths = ["conformance"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
 
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+"conformance/*.py" = ["E402"]
+
 [tool.mypy]
 python_version = "3.12"
 strict = true

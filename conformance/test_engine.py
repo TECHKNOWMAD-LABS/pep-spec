@@ -8,10 +8,13 @@ from typing import Any
 import jsonschema
 import pytest
 
-from conformance.helpers import VALID_UUID, VALID_UUID_2, VALID_UUID_3, load_schema
+from conformance.helpers import VALID_UUID, load_schema
 from stubs.engine import (
-    Engine, Population, Selection, Crossover, EngineMutation, Termination,
-    SelectionStrategy, CrossoverMethod,
+    CrossoverMethod,
+    Engine,
+    Population,
+    SelectionStrategy,
+    Termination,
 )
 
 SCHEMA = load_schema("engine")
