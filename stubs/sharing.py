@@ -15,6 +15,8 @@ from stubs.validation import (
 
 
 class SharingFormat(str, Enum):
+    """Export formats: pep-native, onnx, safetensors, json, custom."""
+
     PEP_NATIVE = "pep-native"
     ONNX = "onnx"
     SAFETENSORS = "safetensors"
@@ -23,6 +25,8 @@ class SharingFormat(str, Enum):
 
 
 class TargetProtocol(str, Enum):
+    """Target protocols: https, ipfs, s3, local."""
+
     HTTPS = "https"
     IPFS = "ipfs"
     S3 = "s3"
@@ -30,6 +34,8 @@ class TargetProtocol(str, Enum):
 
 
 class IntegrityAlgorithm(str, Enum):
+    """Hash algorithms: sha256, sha512, blake3."""
+
     SHA256 = "sha256"
     SHA512 = "sha512"
     BLAKE3 = "blake3"

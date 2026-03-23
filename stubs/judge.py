@@ -17,6 +17,8 @@ from stubs.validation import (
 
 
 class Metric(str, Enum):
+    """Evaluation metric types: accuracy, latency, cost, safety, creativity."""
+
     ACCURACY = "accuracy"
     LATENCY = "latency"
     COST = "cost"
@@ -26,6 +28,8 @@ class Metric(str, Enum):
 
 @dataclass
 class Criterion:
+    """A weighted evaluation criterion with threshold and metric type."""
+
     name: str
     weight: float
     threshold: float
@@ -55,6 +59,8 @@ class Criterion:
 
 @dataclass
 class VerdictDetail:
+    """Score for a single criterion within a verdict."""
+
     criterion: str
     score: float
     passed: bool
@@ -69,6 +75,8 @@ class VerdictDetail:
 
 @dataclass
 class Verdict:
+    """Evaluation result for an organism: aggregate score and per-criterion details."""
+
     organism_id: str
     score: float
     passed: bool
@@ -97,6 +105,8 @@ class Verdict:
 
 @dataclass
 class JudgeConfig:
+    """Configuration for judge execution: retries, timeout, parallelism."""
+
     max_retries: int
     timeout_ms: int
     parallel: bool
@@ -119,6 +129,8 @@ class JudgeConfig:
 
 @dataclass
 class Judge:
+    """PEP-002: Evaluates organisms against weighted criteria and produces verdicts."""
+
     id: str
     name: str
     version: str

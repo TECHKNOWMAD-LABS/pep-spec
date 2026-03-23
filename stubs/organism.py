@@ -17,6 +17,8 @@ from stubs.validation import (
 
 
 class OrganismStatus(str, Enum):
+    """Lifecycle status of an organism: embryo -> alive -> dormant -> dead."""
+
     EMBRYO = "embryo"
     ALIVE = "alive"
     DORMANT = "dormant"
@@ -25,6 +27,8 @@ class OrganismStatus(str, Enum):
 
 @dataclass
 class Trait:
+    """A named trait with a value and weight in [0, 1]."""
+
     name: str
     value: Any
     weight: float
@@ -42,6 +46,8 @@ class Trait:
 
 @dataclass
 class Mutation:
+    """A genetic mutation: add, remove, or modify a gene."""
+
     gene: str
     operation: str  # "add" | "remove" | "modify"
     payload: Any
@@ -61,6 +67,8 @@ class Mutation:
 
 @dataclass
 class Genome:
+    """Collection of traits and mutation history."""
+
     traits: list[Trait] = field(default_factory=list)
     mutations: list[Mutation] = field(default_factory=list)
 
@@ -80,6 +88,8 @@ class Genome:
 
 @dataclass
 class Constraint:
+    """Resource constraint with a named resource and numeric limit."""
+
     resource: str
     limit: float
 
@@ -93,6 +103,8 @@ class Constraint:
 
 @dataclass
 class Phenotype:
+    """Observable characteristics: capabilities and resource constraints."""
+
     capabilities: list[str] = field(default_factory=list)
     constraints: list[Constraint] = field(default_factory=list)
 
@@ -112,6 +124,8 @@ class Phenotype:
 
 @dataclass
 class OrganismMetadata:
+    """Timestamps, tags, and lineage tracking for an organism."""
+
     created_at: str
     updated_at: str
     tags: list[str] = field(default_factory=list)
@@ -137,6 +151,8 @@ class OrganismMetadata:
 
 @dataclass
 class Organism:
+    """PEP-001: The fundamental evolvable unit with genome, phenotype, and lifecycle."""
+
     id: str
     name: str
     version: str

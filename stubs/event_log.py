@@ -16,6 +16,8 @@ from stubs.validation import (
 
 
 class EventType(str, Enum):
+    """Types of events in the PEP event log."""
+
     ORGANISM_CREATED = "organism.created"
     ORGANISM_MUTATED = "organism.mutated"
     ORGANISM_EVALUATED = "organism.evaluated"
@@ -32,6 +34,8 @@ class EventType(str, Enum):
 
 
 class ComponentType(str, Enum):
+    """PEP component types that can emit events."""
+
     ORGANISM = "organism"
     JUDGE = "judge"
     ENGINE = "engine"

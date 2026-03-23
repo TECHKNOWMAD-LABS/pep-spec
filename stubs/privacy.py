@@ -16,6 +16,8 @@ from stubs.validation import (
 
 
 class PrivacyScope(str, Enum):
+    """Scopes for privacy policies: organism, judge, engine, event, global."""
+
     ORGANISM = "organism"
     JUDGE = "judge"
     ENGINE = "engine"
@@ -24,6 +26,8 @@ class PrivacyScope(str, Enum):
 
 
 class RuleAction(str, Enum):
+    """Privacy actions: redact, hash, encrypt, omit, generalize."""
+
     REDACT = "redact"
     HASH = "hash"
     ENCRYPT = "encrypt"
@@ -32,6 +36,8 @@ class RuleAction(str, Enum):
 
 
 class ConditionContext(str, Enum):
+    """Contexts when privacy rules apply: export, log, api, always."""
+
     EXPORT = "export"
     LOG = "log"
     API = "api"

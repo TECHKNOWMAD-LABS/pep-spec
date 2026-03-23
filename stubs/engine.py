@@ -16,6 +16,8 @@ from stubs.validation import (
 
 
 class SelectionStrategy(str, Enum):
+    """Selection strategies for evolutionary algorithms."""
+
     TOURNAMENT = "tournament"
     ROULETTE = "roulette"
     RANK = "rank"
@@ -23,6 +25,8 @@ class SelectionStrategy(str, Enum):
 
 
 class CrossoverMethod(str, Enum):
+    """Crossover methods for genetic recombination."""
+
     SINGLE_POINT = "single_point"
     TWO_POINT = "two_point"
     UNIFORM = "uniform"

@@ -16,6 +16,8 @@ from stubs.validation import (
 
 
 class AgentRole(str, Enum):
+    """Agent roles: evolver, guardian, explorer, harvester, orchestrator."""
+
     EVOLVER = "evolver"
     GUARDIAN = "guardian"
     EXPLORER = "explorer"
@@ -24,6 +26,8 @@ class AgentRole(str, Enum):
 
 
 class AgentStatus(str, Enum):
+    """Agent lifecycle: idle, active, suspended, terminated."""
+
     IDLE = "idle"
     ACTIVE = "active"
     SUSPENDED = "suspended"
