@@ -113,6 +113,10 @@ class TestValidateStringNotEmpty:
     def test_valid_string(self) -> None:
         assert validate_string_not_empty("hello", "x") == "hello"
 
+    def test_non_string(self) -> None:
+        with pytest.raises(ValidationError, match="expected string"):
+            validate_string_not_empty(1, "x")
+
     def test_empty_string(self) -> None:
         with pytest.raises(ValidationError, match="must not be empty"):
             validate_string_not_empty("", "x")
